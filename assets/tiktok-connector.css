@@ -1,0 +1,135 @@
+.app-hero {
+  grid-template-columns: 1fr 270px;
+}
+
+.connector-panel {
+  border-color: rgba(5, 137, 140, 0.35);
+}
+
+.panel-heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.status-chip {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 850;
+  padding: 7px 12px;
+}
+
+.status-chip[data-state="ok"] {
+  background: #e7f7ec;
+  border-color: #b8e3c7;
+  color: #217044;
+}
+
+.status-chip[data-state="warn"] {
+  background: #fff4df;
+  border-color: #f5d496;
+  color: #8a5a00;
+}
+
+.status-chip[data-state="pending"] {
+  background: #e8f1ff;
+  border-color: #b9d4fa;
+  color: #1f69c8;
+}
+
+.connector-form {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 18px;
+}
+
+.connector-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 850;
+  margin-bottom: 10px;
+}
+
+.input-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr auto;
+}
+
+.input-row input {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--ink);
+  font: inherit;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 14px;
+}
+
+.action-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 18px;
+}
+
+.review-console {
+  background: #101622;
+  border-radius: 8px;
+  color: #eef7f8;
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+  max-height: 360px;
+  overflow: auto;
+  padding: 14px;
+}
+
+.console-row {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+}
+
+.console-row span {
+  color: #8ee3df;
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.console-row strong {
+  color: #fff;
+}
+
+.console-row small {
+  color: #b8c4d0;
+  font-size: 13px;
+}
+
+@media (max-width: 980px) {
+  .app-hero {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .panel-heading {
+    display: grid;
+  }
+
+  .input-row,
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+}
