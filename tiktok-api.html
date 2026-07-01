@@ -3,90 +3,139 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TikTok API Setup | Kina Influencer Agent</title>
-    <meta name="description" content="TikTok API setup, OAuth redirect guidance, privacy, terms, and data-use details for Kina Influencer Agent.">
+    <title>TikTok API App Connector | Kina Influencer Agent</title>
+    <meta name="description" content="Working TikTok API connector page for Kina Influencer Agent, showing the app workflow, secure backend connection, OAuth guidance, scopes, privacy, and review demo.">
     <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="assets/tiktok-connector.css">
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="index.html"><span class="brand-mark">K</span><span>Kina</span></a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="index.html">Home</a>
+        <a href="#connector">Connector</a>
+        <a href="#workflow">Workflow</a>
         <a href="#oauth">OAuth</a>
         <a href="#data-use">Data Use</a>
         <a href="privacy.html">Privacy</a>
         <a href="terms.html">Terms</a>
       </nav>
-      <a class="button button-small" href="index.html">Home</a>
+      <a class="button button-small" href="#connector">Open App</a>
     </header>
 
     <main class="doc-shell">
-      <section class="doc-hero">
+      <section class="doc-hero app-hero">
         <div>
-          <h1>TikTok API Setup</h1>
-          <p>Use this page for TikTok developer configuration and app review. Kina connects creator-authorized TikTok data through a secure backend flow.</p>
+          <h1>Kina TikTok App Connector</h1>
+          <p>Kina connects a human-approved AI influencer workflow to TikTok through a private FastAPI backend. API keys, access tokens, and refresh tokens stay on the backend, never inside this public GitHub Pages site.</p>
+          <div class="hero-actions">
+            <a class="button" href="#connector">Use connector</a>
+            <a class="button button-secondary" href="#workflow">Review workflow</a>
+          </div>
         </div>
-        <div class="tiktok-card" aria-label="TikTok integration status">
+        <div class="tiktok-card" aria-label="TikTok connector status">
           <div class="tiktok-logo">♪</div>
-          <strong>Integration ready</strong>
-          <span>Frontend-safe setup page</span>
+          <strong>Public review page</strong>
+          <span>Connected to private app workflow</span>
+        </div>
+      </section>
+
+      <section class="doc-card connector-panel" id="connector">
+        <div class="panel-heading">
+          <div>
+            <h2>Backend Connector</h2>
+            <p>This panel connects the public site to the local or hosted AXIS Influencer FastAPI backend when it is running. Use a backend URL such as <code>http://localhost:8000</code> for local testing or your HTTPS production API later.</p>
+          </div>
+          <span class="status-chip" id="connector-status">Not tested</span>
+        </div>
+
+        <form class="connector-form" id="backend-form">
+          <label for="backend-url">Backend API URL</label>
+          <div class="input-row">
+            <input id="backend-url" name="backend-url" type="url" value="http://localhost:8000" placeholder="https://api.your-domain.com">
+            <button class="button" type="submit">Test backend</button>
+          </div>
+          <p class="note">No TikTok secret or token is entered here. Secrets belong in the backend <code>.env</code> file.</p>
+        </form>
+
+        <div class="action-grid">
+          <button class="button button-secondary" type="button" data-app-action="list-jobs">Load jobs</button>
+          <button class="button button-secondary" type="button" data-app-action="run-demo">Run sample workflow</button>
+          <button class="button button-secondary" type="button" data-app-action="connect-tiktok">Start TikTok OAuth</button>
+        </div>
+
+        <div class="review-console" id="review-console" aria-live="polite">
+          <div class="console-row">
+            <span>System</span>
+            <strong>Ready for reviewer walkthrough.</strong>
+            <small>Configure backend URL, load jobs, or run the sample workflow.</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-card" id="workflow">
+        <h2>What the App Does</h2>
+        <p>The local app is the AXIS Influencer System. It creates AI/tech creator content through an agent pipeline, waits for human approval, then dispatches approved jobs to platform publishers. TikTok publishing is only attempted after approval.</p>
+        <div class="scope-list">
+          <article>
+            <strong>1. Generate campaign content</strong>
+            <span>Trend, research, strategy, script, platform, compliance, and scheduling agents prepare a job.</span>
+          </article>
+          <article>
+            <strong>2. Human approval gate</strong>
+            <span>Approval through Telegram or <code>POST /jobs/{id}/approve</code> is the only path to publishing.</span>
+          </article>
+          <article>
+            <strong>3. TikTok draft upload</strong>
+            <span>After TikTok approval and backend token setup, the backend uses the Content Posting API to upload approved videos as drafts for the creator to finish in TikTok.</span>
+          </article>
         </div>
       </section>
 
       <section class="doc-card" id="oauth">
         <h2>OAuth Redirect</h2>
-        <p>Configure this redirect URI in the TikTok Developer app after your production domain is connected.</p>
+        <p>Configure TikTok OAuth to return to a backend endpoint, not to a static browser-only token exchange. The backend exchanges the authorization code and stores tokens securely.</p>
         <div class="copy-row">
-          <code id="redirect-uri">https://your-domain.com/api/auth/tiktok/callback</code>
+          <code id="redirect-uri">https://your-api-domain.com/api/auth/tiktok/callback</code>
           <button class="icon-button" type="button" data-copy-target="redirect-uri" aria-label="Copy OAuth redirect URI">Copy</button>
         </div>
-        <p class="note">The callback must be handled by your backend. Do not process TikTok tokens in the browser.</p>
-      </section>
-
-      <section class="doc-card">
-        <h2>Connect TikTok</h2>
-        <p>When the backend is ready, this button should start the OAuth authorization flow from your server.</p>
-        <a class="button" href="/api/auth/tiktok/start" aria-disabled="true">Connect with TikTok</a>
-        <p class="note">This static page does not include a client secret, access token, refresh token, or token exchange request.</p>
+        <p class="note">For local testing, use a backend callback such as <code>http://localhost:8000/api/auth/tiktok/callback</code>. Do not put <code>TIKTOK_CLIENT_SECRET</code> on GitHub Pages.</p>
       </section>
 
       <section class="doc-card" id="data-use">
-        <h2>Requested Data Use</h2>
+        <h2>Requested TikTok Scopes</h2>
         <div class="scope-list">
           <article>
-            <strong>Basic profile information</strong>
-            <span>Used to identify the connected creator account and show the account name inside Kina.</span>
+            <strong>user.info.basic</strong>
+            <span>Identifies the connected creator account so Kina can show the account name and confirm the correct user approved the connection.</span>
           </article>
           <article>
-            <strong>Video list and content metadata</strong>
-            <span>Used to match campaign deliverables to creator posts that the creator has authorized.</span>
-          </article>
-          <article>
-            <strong>Performance insights</strong>
-            <span>Used to summarize campaign results for the brand or team managing the campaign.</span>
+            <strong>video.upload</strong>
+            <span>Uploads a human-approved video to the creator account as a TikTok draft for final editing and posting inside TikTok.</span>
           </article>
         </div>
       </section>
 
       <section class="doc-card">
-        <h2>Security Commitments</h2>
+        <h2>Secure API Key Use</h2>
         <ul class="check-list">
-          <li>No TikTok client secret is stored in frontend code.</li>
-          <li>No access token or refresh token is written to this static site.</li>
-          <li>Users can disconnect their TikTok account from the backend integration when available.</li>
-          <li>Only creator-authorized data is used for campaign operations and reporting.</li>
+          <li>TikTok client key, client secret, access token, refresh token, and open id stay in the private backend environment.</li>
+          <li>The public site can call backend endpoints, but it never stores TikTok secrets.</li>
+          <li>The app can run in dry-run mode while TikTok review is pending.</li>
+          <li>Content is not auto-posted. A creator or operator must approve the job first.</li>
         </ul>
       </section>
 
       <section class="doc-grid">
-        <a class="doc-link" href="privacy.html"><strong>Privacy</strong><span>How Kina handles connected account data.</span></a>
-        <a class="doc-link" href="terms.html"><strong>Terms</strong><span>Rules for using Kina Influencer Agent.</span></a>
+        <a class="doc-link" href="privacy.html"><strong>Privacy Policy</strong><span>Explains connected-account data handling.</span></a>
+        <a class="doc-link" href="terms.html"><strong>Terms of Service</strong><span>Rules for using Kina Influencer Agent.</span></a>
       </section>
     </main>
 
     <footer class="site-footer">
       <span>© 2026 Kina Influencer Agent</span>
       <a href="index.html">Home</a>
+      <a href="reddit-api.html">Reddit API</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
     </footer>
